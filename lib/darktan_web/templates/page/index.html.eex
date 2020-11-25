@@ -1,0 +1,11 @@
+<ul>
+  <%= for key <- @keys do %>
+  <li> <%= key %> </li>
+  <% end %>
+
+  <%= form_for @conn, Routes.page_path(@conn, :add_value), fn f -> %>
+    Key: <%= text_input f, :key %>
+    Value: <%= text_input f, :value %>
+    <%= submit "Add" %>
+  <% end %>
+</ul>
