@@ -9,3 +9,6 @@ config :darktan, DarktanWeb.Endpoint,
   ],
   secret_key_base: secret_key_base,
   server: true
+
+config :darktan, Darktan.Store,
+  backend: System.get_env("STORAGE_BACKEND", "false") == "true"
