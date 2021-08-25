@@ -16,7 +16,6 @@ COPY mix.exs mix.lock ./
 ARG MIX_ENV=prod
 ENV MIX_ENV=$MIX_ENV
 RUN mix do deps.get --only=$MIX_ENV, deps.compile
-RUN npm install --prefix assets
 
 # ---- Build Release Stage ----
 FROM deps as releaser
@@ -26,6 +25,7 @@ COPY lib ./lib
 COPY rel ./rel
 COPY priv ./priv
 COPY assets ./assets
+RUN npm install --prefix assets
 RUN npm rebuild node-sass --prefix assets && npm run deploy --prefix assets && mix phx.digest
 RUN mix release && \
     cat mix.exs | grep app: | sed -e 's/ app: ://' | tr ',' ' ' | sed 's/ //g' > app_name.txt
