@@ -17,7 +17,9 @@ defmodule Darktan.Application do
       # Start the Endpoint (http/https)
       DarktanWeb.Endpoint,
       {Cluster.Supervisor, [topologies, [name: Darktan.ClusterSupervisor]]},
-      {Darktan.Store, []}
+      {Darktan.Store, []},
+      {TelemetryMetricsPrometheus, [metrics: metrics()]}
+      # {TelemetryMetricsCloudwatch, [metrics: metrics()]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -31,5 +33,19 @@ defmodule Darktan.Application do
   def config_change(changed, _new, removed) do
     DarktanWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  # defp add_node(metadata) do
+  #   Map.put(metadata, :node, to_string(Node.self()))
+  # end
+
+  defp metrics() do
+
+    [
+      Telemetry.Metrics.last_value("darktan.store.key_count", unit: :counter),
+      Telemetry.Metrics.counter("http.request.count"),
+      Telemetry.Metrics.last_value("vm.memory.total", unit: :byte),
+      Telemetry.Metrics.last_value("vm.total_run_queue_lengths.total")
+    ]
   end
 end

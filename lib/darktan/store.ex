@@ -72,6 +72,9 @@ defmodule Darktan.Store do
     def merge(%__MODULE__{content: content} = state, new_content) do
       %{state | content: Map.merge(content, new_content)}
     end
+
+    @spec key_count(t()) :: non_neg_integer()
+    def key_count(%__MODULE__{content: content}), do: Enum.count(content)
   end
 
   ## Behavioural Functions ##
@@ -103,7 +106,10 @@ defmodule Darktan.Store do
 
   @impl true
   def handle_info({__MODULE__, :put, key, value}, state) do
-    {:noreply, State.put(state, key, value)}
+    state = State.put(state, key, value)
+    :telemetry.execute([:darktan, :store], %{key_count: State.key_count(state)})
+
+    {:noreply, state}
   end
 
   def handle_info({__MODULE__, :request_content, sender}, state) do
