@@ -4,7 +4,7 @@ defmodule Darktan.MixProject do
   def project do
     [
       app: :darktan,
-      version: "0.1.0",
+      version: "0.1.5",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -42,8 +42,15 @@ defmodule Darktan.MixProject do
       {:phoenix_live_dashboard, "~> 0.4"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
+      {:telemetry_metrics_cloudwatch, "~> 0.3.1"},
+      {:telemetry_metrics_prometheus, "~> 0.6.0"},
+      {:ex_aws_sts, "~> 2.1"},
+      {:hackney, "~> 1.16"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
+      {:poison, "~> 4.0"},
+      {:configparser_ex, "~> 4.0"},
+      {:sweet_xml, "~> 0.6.6"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end
