@@ -41,7 +41,14 @@ config :libcluster,
       ]
     ]
   ]
-# ## SSL Support
+
+config :ex_aws,
+  region: {:system, "AWS_REGION"},
+  secret_access_key: [{:awscli, "profile_name", 30}],
+  access_key_id: [{:awscli, "profile_name", 30}],
+  awscli_auth_adapter: ExAws.STS.AuthCache.AssumeRoleWebIdentityAdapter
+
+  # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
 # to the previous section and set your `:url` port to 443:
