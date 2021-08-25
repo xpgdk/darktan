@@ -16,15 +16,28 @@ config :darktan, DarktanWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+#config :libcluster,
+#  topologies: [
+#    dev: [
+#      strategy: Cluster.Strategy.Kubernetes,
+#      config: [
+#        mode: :ip,
+#        kubernetes_ip_lookup_mode: :pods,
+#        kubernetes_node_basename: "darktan",
+#        kubernetes_selector: "app=darktan",
+#        kubernetes_namespace: "darktan",
+#        polling_interval: 10_000
+#      ]
+#    ]
+#  ]
 config :libcluster,
   topologies: [
     dev: [
-      strategy: Cluster.Strategy.Gossip,
+      strategy: Cluster.Strategy.Kubernetes.DNS,
       config: [
-        port: 45_892,
-        multicast_addr: "230.1.1.252",
-        multicast_ttl: 1,
-        secret: "dasx<q123"
+        service: "darktan-headless",
+        application_name: "darktan",
+        polling_interval: 10_000
       ]
     ]
   ]
