@@ -23,6 +23,7 @@ FROM deps as releaser
 RUN echo $MIX_ENV
 COPY config ./config
 COPY lib ./lib
+COPY rel ./rel
 COPY priv ./priv
 COPY assets ./assets
 RUN npm rebuild node-sass --prefix assets && npm run deploy --prefix assets && mix phx.digest
