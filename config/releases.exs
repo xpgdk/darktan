@@ -13,3 +13,32 @@ config :darktan, DarktanWeb.Endpoint,
 
 config :darktan, Darktan.Store,
   backend: System.get_env("STORAGE_BACKEND", "true") == "true"
+
+cluster_dns_service = System.get_env("CLUSTER_DNS_SERVICE", nil)
+
+if cluster_dns_service != nil do
+  config :libcluster,
+    topologies: [
+      dev: [
+        strategy: Cluster.Strategy.Kubernetes.DNS,
+        config: [
+          service: "#{cluster_dns_service}",
+          application_name: "darktan",
+          polling_interval: 10_000
+        ]
+      ]
+    ]
+else
+  config :libcluster,
+    topologies: [
+      dev: [
+        strategy: Cluster.Strategy.Gossip,
+        config: [
+          port: 45_892,
+          multicast_addr: "230.1.1.252",
+          multicast_ttl: 1,
+          secret: "dasx<q123"
+        ]
+      ]
+    ]
+end
