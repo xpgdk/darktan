@@ -1,3 +1,6 @@
+<p>
+Node: <%= Node.self() |> to_string() %>
+</p>
 <ul>
   <%= for key <- @keys do %>
   <li> <%= key %> </li>
